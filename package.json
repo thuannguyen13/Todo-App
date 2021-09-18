@@ -1,0 +1,17 @@
+{
+  "name": "frontend-template",
+  "version": "1.0.0",
+  "description": "HTML, SCSS/CSS, Javascript boilerplate",
+  "main": "index.js",
+  "dependencies": {
+    "brew": "^0.0.8",
+    "node-sass": "^6.0.1",
+    "sass": "^1.32.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "watch": "node-sass -w src/scss -o build/css"
+  },
+  "author": "Thuan Nguyen",
+  "license": "ISC"
+}
