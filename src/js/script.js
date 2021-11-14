@@ -22,4 +22,3 @@ function triggerAlert(){
                 console.log(values)
             });
 };
-
