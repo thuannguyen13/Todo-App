@@ -34,10 +34,27 @@ table {
 :root {
   --red-900: red;
   --gray-100: rgba(0,0,0,0.03);
-  --gray-900: rgba(0,0,0,0.78);
-  --Btn-hover-color: rgba(0,0,0, 0.05);
-  --Btn-active-color: rgba(0,0,0, 0.1);
-  --Btn-border: rgba(0,0,0,0.1); }
+  --gray-900: rgba(0,0,0,0.78); }
+
+html {
+  font-family: 'Inter'; }
+
+.container {
+  display: flex;
+  justify-content: center; }
+
+.textbox {
+  font-size: 16px;
+  line-height: 1.5;
+  color: red;
+  border: 0;
+  height: 40px;
+  width: 320px;
+  background-color: var(--gray-100);
+  border-radius: 4px;
+  box-shadow: 0; }
+  .textbox:hover {
+    border: 1px solid var(--gray-900); }
 
 .button {
   height: 36px;

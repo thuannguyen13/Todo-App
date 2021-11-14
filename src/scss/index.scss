@@ -1,15 +1,30 @@
-@import "reset";
+@import 'reset';
+@import 'variables';
+@import 'typography';
 
-:root {
-  --red-900: red;
 
-  --gray-100: rgba(0,0,0,0.03);
-  --gray-900: rgba(0,0,0,0.78);
+// ===== LAYOUT =====
+.container {
+  display: flex;
+  justify-content: center;
+}
 
-  // ---------------- Local Variable ----------
-  --Btn-hover-color: rgba(0,0,0, 0.05);
-  --Btn-active-color: rgba(0,0,0, 0.1);
-  --Btn-border: rgba(0,0,0,0.1);
+
+
+// ===== COMPONENTS =====
+
+.textbox {
+  @include field-value;
+  border: 0;
+  height: 40px;
+  width: 320px;
+  background-color: var(--gray-100);
+  border-radius: 4px;
+  box-shadow: 0;
+  
+  &:hover{
+    border: 1px solid var(--gray-900);
+  }
 }
 
 .button {
