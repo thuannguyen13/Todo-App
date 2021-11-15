@@ -1,22 +1,33 @@
-// var api = 'https://reqres.in/api/users';
+var newTaskList = document.querySelector('#js-newTaskList'),
+    newTaskEntry = document.querySelector('#js-newTaskEntry'),
+    addBtn = document.querySelector('js-addNewTask');
 
-// var btn,
-//     txtArea;
+function addTask() {
+  var li = document.createElement('li');
+  var checkbox = document.createElement('input');
+  var txt = document.createTextNode(newTaskEntry.value);
+  var closeBtn = document.createElement('span');
 
-// btn     = document.querySelector("#test")
-// txtArea = document.querySelector("#txtArea")
+  closeBtn.className = "close-Button";
+  checkbox.type = "checkbox";
+  li.appendChild(checkbox);
+  li.appendChild(txt);
+  li.appendChild(closeBtn);
+  newTaskList.appendChild(li);
 
-// function triggerAlert(){
-//     console.log(btn)
-//     var users;
-//     var values = []
-//     users = fetch(api)
-//             .then(res => res.json())
-//             .then(data => {
-//                 for (const iDs in data.data ) {
-//                     values.push(data.data[iDs].email)
-//                 };
-//                 txtArea.value = values.join("\r\n")
-//                 console.log(values)
-//             });
-// };
+  // Clear input value
+  newTaskEntry.value = '';
+}
+
+function removeTask() {
+  document.addEventListener('click', function(){
+    var closeButtons = document.querySelectorAll('#js-newTaskList > li > span');
+    for (let i in closeButtons) {
+      closeButtons[i].onclick = function() {
+        closeButtons[i].parentNode.remove()
+      }
+    }
+  })
+}
+
+removeTask();
