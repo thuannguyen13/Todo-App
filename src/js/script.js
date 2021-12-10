@@ -1,18 +1,17 @@
-var newTaskList = document.querySelector('#js-newTaskList'),
-    newTaskEntry = document.querySelector('#js-newTaskEntry'),
-    addBtn = document.querySelector('js-addNewTask');
+var taskListPanel = document.querySelector('[data-task-list]');
+var taskEntryField = document.querySelector('[data-task-entry-field]');
+var taskEntryForm = document.querySelector('[data-task-entry-area]');
+var taskEntryButton = document.querySelector('[data-task-entry-submit-button]');
+var taskCounterLabel = document.querySelector('[data-task-counter]')
 
-// TODO
-
-var globalCounter = 0;
+// Global Variable
 var taskList = [];
 
 class Task {
   constructor(title) {
-    this.id = globalCounter++;
-    this.title = title || '';
+    this.id = Date.now().toString();
+    this.title = title || 'untitled task';
     this.display = true;
-    this.type = 'task'
   }
 
   updateTitle(value) {
@@ -24,92 +23,98 @@ class Task {
   }
 }
 
-var task1 = new Task('Task 1', true)
-var task2 = new Task('Task 2', true)
+taskEntryButton.addEventListener('click', function(){
+  var taskTitle = taskEntryField.value;
+  addTask(taskTitle)
+  taskEntryField.value = '';
+})
 
+taskEntryForm.addEventListener('click', function(element){
+  element.preventDefault();
+})
 
-taskList.push(task1)
-taskList.push(task2)
+taskListPanel.addEventListener('click', function(element){
+  if (element.target && element.target.dataset.closeButton) deleteTask(element)
+  if (element.target && element.target.dataset.updateButton) updateTask(element)
+})
 
-renderTaskList()
-
-function addTask() {
-  var taskItem = new Task(newTaskEntry.value);
-  // Clear input value
-  newTaskEntry.value = '';
-  taskList.push(taskItem);
-  renderTaskList();
+function addTask(title) { 
+  let task = new Task(title);
+  taskList.push(task);
+  render();
 }
 
-function removeTask() {
-  var targetID;
-
-  newTaskList.onclick = function(e) {
-    if (e.target && e.target.className === "close-button") {
-      targetID = e.target.parentNode.dataset.id;
-      e.target.parentNode.dataset.display = false;
-
-      for (let x in taskList) {
-        if (taskList[x].id == targetID) {
-          taskList[x].updateDisplay(false)
-        }
-      }
-
-      renderTaskList()
-    }
-  }
+function updateTask(element) {
+  let targetID = element.target.parentNode.dataset.id;
+  let newTitle = document.querySelector(`[data-id="${targetID}"] > [data-task-title]`).value
+  findID(targetID, taskList).updateTitle(newTitle)
+  render()
 }
 
-function updateTask() {
-  var targetID;
-
-  newTaskList.onclick = function(e) {
-    if (e.target && e.target.className === "update-button") {
-      targetID = e.target.parentNode.dataset.id;
-
-      for (let x in taskList) {
-        if (taskList[x].id == targetID) {
-          taskList[x].updateTitle(document.querySelector(`[data-id="${targetID}"] > .task-title-field`).value);
-        }
-      }
-      renderTaskList()
-      console.log(taskList)
-    }
-  }
+function deleteTask(element){
+  let targetID = element.target.parentNode.dataset.id;
+  findID(targetID, taskList).updateDisplay(false)
+  render()
 }
 
-function renderTaskList() {
-  newTaskList.innerHTML = '';
+function countTask(){
+  let listLength = taskList.filter(list => list.display !== false).length;
+  taskCounterLabel.textContent = `${listLength} item(s)`
+  return listLength;
+}
+
+function render() {
+  clearElement(taskListPanel)
 
   taskList.forEach(item => {
     let li = document.createElement('li')
     let checkbox = document.createElement('input');
     let taskTitlefield = document.createElement('input');
     let updateBtn = document.createElement('button');
-    let closeBtn = document.createElement('span');
+
+    let closeBtn = document.createElement('button');
     li.dataset.id = item.id;
-    li.dataset.display = item.display;
-    li.dataset.type = item.type;
 
     if (item.display == true) {
-      closeBtn.className = "close-button";
-      checkbox.type = "checkbox";
-      updateBtn.textContent = "update";
-      updateBtn.className = "update-button";
-      taskTitlefield.className = "task-title-field";
-      taskTitlefield.value = item.title;
+      checkbox.type = 'checkbox';
 
-      
+      taskTitlefield.className = 'task-title-field';
+      taskTitlefield.value = item.title;
+      taskTitlefield.dataset.taskTitle = 'taskTitle'
+
+      closeBtn.className = 'button button-ghost close-button';
+      closeBtn.textContent = 'remove';
+      closeBtn.dataset.closeButton = 'close-button';
+
+      updateBtn.textContent = 'update';
+      updateBtn.className = 'button button-ghost update-button';
+      updateBtn.dataset.updateButton = 'update-button';
+
+
       li.appendChild(checkbox);
       li.appendChild(taskTitlefield);
       li.appendChild(updateBtn);
       li.appendChild(closeBtn);
 
-      newTaskList.appendChild(li);
+      taskListPanel.appendChild(li);
 
     }
   })
+
+  countTask()
+  console.log(taskList)
 }
 
-removeTask()
-updateTask()
+function clearElement(element){
+  while (element.firstChild){
+    taskListPanel.removeChild(element.firstChild);
+  }
+}
+
+function findID(id, list){
+  for (let i in list) {
+    if (list[i].id == id) {
+      return list[i]
+    }
+  }
+}

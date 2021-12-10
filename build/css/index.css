@@ -48,7 +48,8 @@ table {
   --blue-500: rgba(3, 107, 227, 1);
   --blue-600: rgba(0, 79, 169, 1);
   --blue-700: rgba(0, 66, 143, 1);
-  --mono-white: rgba(255,255,255,1); }
+  --mono-white: rgba(255,255,255,1);
+  --shadow-100: 0px 8px 16px 0px rgba(0,0,0,0.1); }
 
 html {
   font-family: 'Inter'; }
@@ -63,31 +64,40 @@ html {
 .entrySection {
   display: flex; }
 
-.newTask-panel {
+.panel {
   width: 100%;
   min-height: 48px;
   margin-top: 16px;
-  background-color: var(--gray-300);
-  padding: 16px;
-  border-radius: 12px; }
+  background-color: var(--mono-white);
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  box-shadow: var(--shadow-100); }
 
-.taskList {
-  margin-top: 24px; }
-  .taskList > li {
-    height: 32px;
-    background-color: var(--mono-white);
-    border-top: 1px solid var(--gray-300);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    padding: 0 8px; }
-    .taskList > li:first-child {
-      border-top: 0; }
+.panel-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between; }
+
+.panel-body {
+  padding: 16px; }
+
+.task-list > li {
+  border-top: 1px solid var(--gray-300);
+  background-color: var(--mono-white);
+  border-top: 1px solid var(--gray-300);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  margin: 0 -16px; }
+  .task-list > li:last-child {
+    border-bottom: 1px solid var(--gray-300); }
+
+.task-title-field {
+  border: 0;
+  width: 100%; }
 
 .close-Button {
-  width: 20px;
-  height: 20px;
-  background-color: black;
   display: inline-block;
   margin-left: auto; }
 
@@ -125,3 +135,17 @@ html {
     background-color: var(--blue-600); }
   .button:active {
     background-color: var(--blue-700); }
+
+.button-ghost {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--gray-900);
+  white-space: nowrap; }
+  .button-ghost:hover {
+    background-color: var(--gray-200); }
+  .button-ghost:active {
+    background-color: var(--gray-300); }
