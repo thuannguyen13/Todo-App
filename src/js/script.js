@@ -1,7 +1,8 @@
-var newTaskList = document.querySelector('#js-newTaskList');
-var newTaskEntry = document.querySelector('#js-newTaskEntry');
-var addBtn = document.querySelector('#js-addNewTask');
+var taskListPanel = document.querySelector('[data-task-list]');
+var taskEntryField = document.querySelector('[data-task-entry-field]');
 var taskEntryForm = document.querySelector('[data-task-entry-area]');
+var taskEntryButton = document.querySelector('[data-task-entry-submit-button]');
+var taskCounterLabel = document.querySelector('[data-task-counter]')
 
 // Global Variable
 var taskList = [];
@@ -22,55 +23,48 @@ class Task {
   }
 }
 
-addBtn.addEventListener('click', function(){
-  addTask()
+taskEntryButton.addEventListener('click', function(){
+  var taskTitle = taskEntryField.value;
+  addTask(taskTitle)
+  taskEntryField.value = '';
 })
 
 taskEntryForm.addEventListener('click', function(element){
   element.preventDefault();
 })
 
-newTaskList.addEventListener('click', function(element){
-  if (element.target && element.target.dataset.closeButton) {
-    deleteTask(element)
-    render()
-  }
-  if (element.target && element.target.dataset.updateButton) {
-    updateTask(element)
-    render()
-  }
-  
+taskListPanel.addEventListener('click', function(element){
+  if (element.target && element.target.dataset.closeButton) deleteTask(element)
+  if (element.target && element.target.dataset.updateButton) updateTask(element)
 })
 
-function addTask() { 
-  var task = new Task(newTaskEntry.value);
-  newTaskEntry.value = '';
+function addTask(title) { 
+  let task = new Task(title);
   taskList.push(task);
   render();
 }
 
 function updateTask(element) {
-  var targetID = element.target.parentNode.dataset.id;
-  for (let x in taskList) {
-    if (taskList[x].id == targetID) {
-      taskList[x].updateTitle(document.querySelector(`[data-id="${targetID}"] > [data-task-title]`).value);
-    }
-  }
+  let targetID = element.target.parentNode.dataset.id;
+  let newTitle = document.querySelector(`[data-id="${targetID}"] > [data-task-title]`).value
+  findID(targetID, taskList).updateTitle(newTitle)
   render()
 }
 
 function deleteTask(element){
-  var targetID = element.target.parentNode.dataset.id;
-  for (let x in taskList) {
-    if (taskList[x].id == targetID) {
-      taskList[x].updateDisplay(false)
-    }
-  }
+  let targetID = element.target.parentNode.dataset.id;
+  findID(targetID, taskList).updateDisplay(false)
   render()
 }
 
+function countTask(){
+  let listLength = taskList.filter(list => list.display !== false).length;
+  taskCounterLabel.textContent = `${listLength} item(s)`
+  return listLength;
+}
+
 function render() {
-  clearElement(newTaskList)
+  clearElement(taskListPanel)
 
   taskList.forEach(item => {
     let li = document.createElement('li')
@@ -100,18 +94,24 @@ function render() {
       li.appendChild(updateBtn);
       li.appendChild(closeBtn);
 
-      newTaskList.appendChild(li);
-
+      taskListPanel.appendChild(li);
     }
   })
+
+  countTask()
+  console.log(taskList)
 }
 
 function clearElement(element){
   while (element.firstChild){
-    newTaskList.removeChild(element.firstChild);
+    taskListPanel.removeChild(element.firstChild);
   }
 }
 
-function getElementId(element){
-
+function findID(id, list){
+  for (let i in list) {
+    if (list[i].id == id) {
+      return list[i]
+    }
+  }
 }

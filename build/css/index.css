@@ -64,29 +64,34 @@ html {
 .entrySection {
   display: flex; }
 
-.newTask-panel {
+.panel {
   width: 100%;
   min-height: 48px;
   margin-top: 16px;
   background-color: var(--mono-white);
   border: 1px solid var(--gray-300);
-  padding: 16px;
   border-radius: 12px;
   box-shadow: var(--shadow-100); }
 
-.taskList {
-  margin-top: 24px; }
-  .taskList > li {
-    border-top: 1px solid var(--gray-300);
-    background-color: var(--mono-white);
-    border-top: 1px solid var(--gray-300);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    margin: 0 -16px; }
-    .taskList > li:last-child {
-      border-bottom: 1px solid var(--gray-300); }
+.panel-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between; }
+
+.panel-body {
+  padding: 16px; }
+
+.task-list > li {
+  border-top: 1px solid var(--gray-300);
+  background-color: var(--mono-white);
+  border-top: 1px solid var(--gray-300);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  margin: 0 -16px; }
+  .task-list > li:last-child {
+    border-bottom: 1px solid var(--gray-300); }
 
 .task-title-field {
   border: 0;

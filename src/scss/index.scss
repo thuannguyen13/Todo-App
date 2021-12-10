@@ -16,19 +16,27 @@
   display: flex;
 }
 
-.newTask-panel {
+.panel {
   width: 100%;
   min-height: 48px;
   margin-top: 16px;
   background-color: var(--mono-white);
   border: 1px solid var(--gray-300);
-  padding: 16px;
   border-radius: 12px;
   box-shadow: var(--shadow-100);
 }
 
-.taskList {
-  margin-top: 24px;
+.panel-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.panel-body {
+  padding: 16px;
+}
+
+.task-list {
 
   > li {
     border-top: 1px solid var(--gray-300);
