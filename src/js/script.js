@@ -5,22 +5,17 @@ var taskEntryButton = document.querySelector('[data-task-entry-submit-button]');
 var taskCounterLabel = document.querySelector('[data-task-counter]')
 
 // Global Variable
-var taskList = [];
+const LOCALSTORAGE_LIST_KEY = 'list.name';
+var taskList = JSON.parse(localStorage.getItem(LOCALSTORAGE_LIST_KEY)) || [];
+// var taskList = [];
+load()
 
-class Task {
-  constructor(title) {
-    this.id = Date.now().toString();
-    this.title = title || 'untitled task';
-    this.display = true;
-  }
+// localStorage.clear()
 
-  updateTitle(value) {
-    this.title = value;
-  }
-
-  updateDisplay(value) {
-    this.display = value;
-  }
+function Task(title) {
+  this.id = Date.now().toString();
+  this.title = title || 'untitled task';
+  this.display = true;
 }
 
 taskEntryButton.addEventListener('click', function(){
@@ -41,20 +36,21 @@ taskListPanel.addEventListener('click', function(element){
 function addTask(title) { 
   let task = new Task(title);
   taskList.push(task);
-  render();
+  saveAndRender()
 }
 
 function updateTask(element) {
   let targetID = element.target.parentNode.dataset.id;
   let newTitle = document.querySelector(`[data-id="${targetID}"] > [data-task-title]`).value
-  findID(targetID, taskList).updateTitle(newTitle)
-  render()
+  console.log(findID(targetID, taskList))
+  findID(targetID, taskList).title = newTitle
+  saveAndRender()
 }
 
 function deleteTask(element){
   let targetID = element.target.parentNode.dataset.id;
-  findID(targetID, taskList).updateDisplay(false)
-  render()
+  findID(targetID, taskList).display = false;
+  saveAndRender()
 }
 
 function countTask(){
@@ -65,7 +61,6 @@ function countTask(){
 
 function render() {
   clearElement(taskListPanel)
-
   taskList.forEach(item => {
     let li = document.createElement('li')
     let checkbox = document.createElement('input');
@@ -82,11 +77,11 @@ function render() {
       taskTitlefield.value = item.title;
       taskTitlefield.dataset.taskTitle = 'taskTitle'
 
-      closeBtn.className = 'button button-ghost close-button';
-      closeBtn.textContent = 'remove';
+      closeBtn.className = 'button button-ghost button-danger';
+      closeBtn.textContent = 'Remove';
       closeBtn.dataset.closeButton = 'close-button';
 
-      updateBtn.textContent = 'update';
+      updateBtn.textContent = 'Update';
       updateBtn.className = 'button button-ghost update-button';
       updateBtn.dataset.updateButton = 'update-button';
 
@@ -100,10 +95,26 @@ function render() {
 
     }
   })
-
   countTask()
   console.log(taskList)
 }
+
+function save() {
+  localStorage.setItem(LOCALSTORAGE_LIST_KEY, JSON.stringify(taskList));
+}
+
+function saveAndRender() {
+  save()
+  render()
+}
+
+function load(){
+  taskList = JSON.parse(localStorage.getItem(LOCALSTORAGE_LIST_KEY)) || [];
+  console.log("local:" + taskList)
+  render()
+}
+
+// Helpers
 
 function clearElement(element){
   while (element.firstChild){
