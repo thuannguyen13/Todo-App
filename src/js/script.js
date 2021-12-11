@@ -7,10 +7,8 @@ var taskCounterLabel = document.querySelector('[data-task-counter]')
 // Global Variable
 const LOCALSTORAGE_LIST_KEY = 'list.name';
 var taskList = JSON.parse(localStorage.getItem(LOCALSTORAGE_LIST_KEY)) || [];
-// var taskList = [];
-load()
 
-// localStorage.clear()
+load()
 
 function Task(title) {
   this.id = Date.now().toString();
